@@ -1,9 +1,23 @@
-require('dotenv').config()
+(async () => {
+  require('dotenv').config()
 
-const express = require('express')
+  const db = require('./db')
 
-const app = express()
+  await db.connect()
 
-app.listen(process.env.SERVER_PORT, () => {
-  console.log(`Servidor rodando em: ${process.env.SERVER_HOST}:${process.env.SERVER_PORT}`)
-})
+  const express = require('express')
+
+  const app = express()
+
+  app.use(express.json())
+
+  app.use(express.urlencoded({ extended: true }))
+  
+  const userController = require('../controllers/user-controller')
+  
+  app.use('/user/v1', userController)
+  
+  app.listen(process.env.SERVER_PORT, () => {
+    console.log(`Servidor rodando em: ${process.env.SERVER_HOST}:${process.env.SERVER_PORT}`)
+  })
+})()
