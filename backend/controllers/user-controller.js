@@ -25,14 +25,18 @@ router.get('/:id', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-  const salt = bcrypt.genSaltSync(10)
-  const { login, senha, dataNascimento } = req.body
-  const user = await User.create({
-    login,
-    senha: bcrypt.hashSync(senha, salt),
-    dataNascimento
-  })
-  return res.json(user)
+  try {
+    const salt = bcrypt.genSaltSync(10)
+    const { login, senha, dataNascimento } = req.body
+    const user = await User.create({
+        login,
+        senha: bcrypt.hashSync(senha, salt),
+        dataNascimento
+    })
+    return res.json(user)
+  } catch (error) {
+    res.json({ message: error.message })
+  }
 })
 
 router.put('/', async (req,res) => {

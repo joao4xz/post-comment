@@ -7,8 +7,12 @@ const jsonwebtoken = require('jsonwebtoken')
 const authorized = async (req, res, next) => {
   const { authorization } = req.headers
 
+  
+  if(!authorization){
+    return res.json({ message: 'Voce precisa enviar as credenciais de autorização.' })
+  }
+  
   const [bearer, token] = authorization.split(' ')
-
   if(!/Bearer/.test(bearer)){
     return res.json({ message: 'O tipo de autenticação não é a esperada.' })
   }
