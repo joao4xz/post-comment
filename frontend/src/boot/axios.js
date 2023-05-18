@@ -1,5 +1,6 @@
 import { boot } from 'quasar/wrappers'
 import axios from 'axios'
+import { securityStore } from 'stores/security'
 
 // Be careful when using SSR for cross-request state pollution
 // due to creating a Singleton instance here;
@@ -10,7 +11,11 @@ import axios from 'axios'
 const api = axios.create({ baseURL: process.env.SERVER_HOST })
 
 api.interceptors.request.use(function (config) {
-  config.headers.Authorization = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjg0MzUyNTI0fQ.WfZDU5UPV8HkVEbo2sEaVwA9bxheZLMy_YUso-0s5cI'
+  const store = securityStore()
+  const { token } = store.auth
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
   return config
 }, function (error) {
   return Promise.reject(error)
@@ -23,8 +28,6 @@ api.interceptors.response.use(function (response) {
 })
 
 export default boot(({ app }) => {
-  // for use inside Vue files (Options API) through this.$axios and this.$api
-
   app.config.globalProperties.$axios = axios
   // ^ ^ ^ this will allow you to use this.$axios (for Vue Options API form)
   //       so you won't necessarily have to import axios in each vue file

@@ -8,9 +8,9 @@ export const securityStore = defineStore('auth', {
       token: null
     }
   }),
-  action: {
+  actions: {
     async login ({ login, senha }) {
-      const res = await api.post('security/v1/login', { login, senha })
+      const res = await api.post('/security/v1/login', { login, senha })
       const { message } = res.data
       if (message) {
         notify({
@@ -21,6 +21,17 @@ export const securityStore = defineStore('auth', {
       }
       this.auth = res.data
       this.router.push('/')
+    },
+    logoff () {
+      this.auth = {
+        token: null
+      }
+      this.router.push('/login')
     }
+  },
+  persist: {
+    key: 'app',
+    path: ['auth'],
+    storage: localStorage
   }
 })
