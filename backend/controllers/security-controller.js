@@ -16,7 +16,9 @@ router.post('/login', async (req,res) => {
     return res.json({ message: 'Senha inválida.' })
   }
 
-  const token = jsonwebtoken.sign({ id: user.id }, process.env.JWT_SECURITY_TOKEN)
+  const token = jsonwebtoken.sign({ id: user.id }, process.env.JWT_SECURITY_TOKEN, {
+    expiresIn: '1d'
+  })
 
   return res.json({ token })
 })
