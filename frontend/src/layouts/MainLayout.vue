@@ -58,7 +58,7 @@ const linksList = [
     title: 'Posts',
     caption: 'post e comentario da aplicação',
     icon: 'post_add',
-    link: '/posts'
+    link: '/posts/view'
   }
 ]
 

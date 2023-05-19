@@ -54,6 +54,14 @@ export default ({ app }) => {
         { path: 'view', component: () => import('pages/user/UserView.vue') },
         { path: 'form', component: () => import('pages/user/UserForm.vue') }
       ]
+    },
+    {
+      path: '/posts',
+      component: () => import('layouts/MainLayout.vue'),
+      children: [
+        { path: 'view', component: () => import('pages/post/PostView.vue') },
+        { path: 'form', component: () => import('pages/post/PostForm.vue') }
+      ]
     }
   ])
 }
