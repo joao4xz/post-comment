@@ -1,21 +1,25 @@
 <template>
   <div class="q-pa-sm">
     <q-card flat>
-      <q-item>
-        <q-item-section avatar>
-          <q-avatar>
-            <img src="https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg">
-          </q-avatar>
-        </q-item-section>
-        <q-item-section>
-          <q-item-label>Usuários</q-item-label>
-          <q-item-label caption>Listagem de usuários</q-item-label>
-        </q-item-section>
-      </q-item>
+      <q-toolbar>
+        <q-item>
+          <q-item-section avatar>
+            <q-avatar>
+              <img src="https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg">
+            </q-avatar>
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Usuários</q-item-label>
+            <q-item-label caption>Listagem de usuários</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-space />
+        <q-btn icon="add" flat color="primary" @click="add" />
+      </q-toolbar>
       <q-separator />
       <div class="col-md-12">
         <div class="q-pa-sm">
-          <q-table dense flat :rows="rows" :columns="columns" class="cursor-pointer" @row-click="openUserForm"/>
+          <q-table dense flat :rows="rows" :columns="columns" class="cursor-pointer" @row-click="openUserForm" />
         </div>
       </div>
     </q-card>
@@ -62,6 +66,9 @@ export default {
   methods: {
     openUserForm (evt, row) {
       this.$router.push(`/users/form?id=${row.id}`)
+    },
+    add () {
+      this.$router.push('/users/form')
     }
   },
   async mounted () {

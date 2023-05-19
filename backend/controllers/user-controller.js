@@ -44,7 +44,12 @@ router.put('/', async (req,res) => {
     const user = await User.findByPk(req.body.id)
     const { login, senha, dataNascimento } = req.body
     user.login = login
-    user.senha = senha
+    if (user.senha !== senha) {
+      const salt = bcrypt.genSaltSync(10)
+      user.senha = bcrypt.hashSync(senha, salt)
+    } else {
+      user.senha = senha
+    }
     user.dataNascimento = dataNascimento
     await user.save()
     res.json({ message: `Usuário '${login}' atualizado com sucesso...`})
@@ -56,6 +61,9 @@ router.put('/', async (req,res) => {
 
 router.delete('/:id', async (req,res) => {
   const user = await User.findByPk(req.params.id)
+  if (user.id === req.user.id) {
+    return res.json({ message: 'Você não pode excluir o usuário logado.' })
+  }
   if (!user) {
     return res.json({ message: 'Usuário não encontrado.' })
   }
